@@ -190,7 +190,7 @@ The Frameworks/Libraries used in the project and their purposes:
   1.0.0
 
 ## License
-  Copyright &copy; 2022. All Right Reserved.<br>
+  Copyright &copy; 2023. All Right Reserved.<br>
   This project is licensed under the [MIT License](LICENSE.txt)
 
 ## References
