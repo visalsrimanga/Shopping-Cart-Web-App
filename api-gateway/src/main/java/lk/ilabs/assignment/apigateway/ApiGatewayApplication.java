@@ -46,6 +46,7 @@ public class ApiGatewayApplication {
             public boolean matches(CharSequence rawPassword, String encodedPassword) {
                 return encode(rawPassword).equals(encodedPassword);
             }
+
         };
     }
 
