@@ -3,32 +3,19 @@
 Simple online shopping cart web application to manage a shopping cart for users. (backend only).
 
 - [System Design](#system-design)
-  - [1. Description](#1-requirements)
+  - [1. Requirements](#1-requirements)
   - [2. High-level design](#2-high-level-design)
   - [3. Defining data model](#3-defining-data-model)
-    - [Product Service](#product-service)
-    - [Audit Service](#audit-service)
-    - [Shopping Cart Service](#shopping-cart-service)
-    - [Order Service](#order-service)
+    - [Cart Service](#cart-service)
   - [4. Detailed design](#4-detailed-design)
-    - [Authentication Service](#authentication-service)
     - [API Gateway](#api-gateway)
-    - [Registry Service](#registry-service)
-    - [Product Service](#product-service)
-    - [Audit Service](#audit-service)
-    - [Shopping Cart Service](#shopping-cart-service)
-    - [Order Service](#order-service)
-  - [5. Monitoring](#5-monitoring)
-  - [6. Identifying and resolving single point of failures and bottlenecks](#6-identifying-and-resolving-single-point-of-failures-and-bottlenecks)
-    - [Single point of failure](#single-point-of-failure)
-    - [Bottlenecks](#bottlenecks)
+    - [Discovery Service](#discovery-service)
 - [Software development principles](#software-development-principles)
   - [KISS (Keep It Simple Stupid)](#kiss-keep-it-simple-stupid)
   - [YAGNI (You aren't gonna need it)](#yagni-you-arent-gonna-need-it)
   - [Separation of Concerns](#separation-of-concerns)
   - [DRY](#dry)
   - [Code For The Maintainer](#code-for-the-maintainer)
-  - [Avoid Premature Optimization](#avoid-premature-optimization)
   - [Minimise Coupling](#minimise-coupling)
   - [Inversion of Control](#inversion-of-control)
   - [Single Responsibility Principle](#single-responsibility-principle)
@@ -37,12 +24,13 @@ Simple online shopping cart web application to manage a shopping cart for users.
 - [How to run the application](#how-to-run-the-application)
   - [Setup development workspace](#setup-development-workspace)
   - [Run a microservice](#run-a-microservice)
-- [API Documentation](#api-documentation)
 - [Project folder structure and Frameworks, Libraries](#project-folder-structure-and-frameworks-libraries)
   - [Project folder structure](#project-folder-structure)
   - [Frameworks and Libraries](#frameworks-and-libraries)
+- [Version](#version)
+- [License](#license)
 - [References](#references)
-- [Other projects](#other-projects)
+- [Contact Details](#contact-details)
 
 ## System Design
 
@@ -64,24 +52,26 @@ At a high-level, we need some following services (or components) to handle above
 - **Cart Service**: manages customers shopping carts with CRUD operations.
 - **API Gateway**: Route requests to multiple services using a single endpoint. This service allows us to expose multiple services on a single endpoint and route to the appropriate service based on the request.
 
-### 2. Defining data model
+### 3. Defining data model
    In this part, we describe considerations for managing data in our architecture. For each service, we discuss data schema and datastore considerations.
 
    In general, we follow the basic principle of microservices is that each service manages its own data. Two services should not share a data store.
    
 ![High Level Design](external-files/define-data.png)
+
 #### Cart Service
 The Cart service stores information about cart of the customers. The storage requirements for the Shopping Cart Service are:
 - Short-term storage. Each customer will have their own shopping cart and only one shopping cart at the moment. After customer checkout, the shopping cart data will be cleared.
 - Need retrieve/lookup shopping cart data quickly and update shopping cart data quickly.
 
+### 4. Detailed design
 #### API Gateway
 We need API Gateway for following reasons:
 - When a client needs to consume multiple services, setting up a separate endpoint for each service and having the client manage each endpoint can be challenging. Each service has a different API that the client must interact with, and the client must know about each endpoint in order to connect to the services. If an API changes, the client must be updated as well. If we refactor a service into two or more separate services, the code must change in both the service and the client.
 - Simplify application development by moving shared service functionality, such as the use of SSL certificates, from other parts of the application into the gateway. Other common services such as authentication, authorization, logging, monitoring, or throttling can be difficult to implement and manage across a large number of deployments. It may be better to consolidate this type of functionality, in order to reduce overhead and the chance of errors. Simpler configuration results in easier management and scalability and makes service upgrades simpler.
 - Provide some consistency for request and response logging and monitoring.
 
-#### Registry Service
+#### Discovery Service
 We use *spring-cloud-starter-netflix-eureka-server* to start Eureka Server for service registration and discovery in our system. It helps API Gateway routing requests by service name instead of hard-code URL.
 
 
@@ -196,8 +186,19 @@ The Frameworks/Libraries used in the project and their purposes:
 - spring-security-test: for the testing Spring Security.
 - modelmapper: to make object mapping easy, by automatically determining how one object model maps to another, based on conventions.
 
+## Version
+  1.0.0
+
+## License
+  Copyright &copy; 2022. All Right Reserved.<br>
+  This project is licensed under the [MIT License](LICENSE.txt)
+
 ## References
 - [Designing a microservices architecture](https://docs.microsoft.com/en-us/azure/architecture/microservices/design/) - *Azure Architecture Center | Microsoft Docs*
 - [Cloud design patterns](https://docs.microsoft.com/en-us/azure/architecture/patterns/) - *Azure Architecture Center | Microsoft Docs*
 - [The System Design Primer](https://github.com/donnemartin/system-design-primer)
 
+## Contact Details
+
+* Email: visalsrimanga@gmail.com
+* Linkedin: Visal Srimanga
